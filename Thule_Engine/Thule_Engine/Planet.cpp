@@ -18,7 +18,7 @@ Planet::~Planet()
 
 void Planet::update(const float& delta)
 {
-	this->rad_angle += (1000.f/radius)*delta; // make it gravitate, to be removed
+	this->rad_angle += (1.f/radius)*delta; // make it gravitate, to be removed
 	this->rad_angle = constrainAngle(this->rad_angle);
 
 	this->pos.x = radius * cos(rad_angle) + G->pos.x;

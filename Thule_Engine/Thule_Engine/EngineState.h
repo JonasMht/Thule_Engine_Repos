@@ -13,7 +13,6 @@ private:
 	sf::View minimapView;
 	sf::Event event;
 
-	
 
 	/*Private functions*/
 	void initKeybinds();

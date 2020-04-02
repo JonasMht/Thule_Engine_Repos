@@ -160,7 +160,6 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EngineState.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="SpaceEntity.h" />
     <ClInclude Include="Sun.h" />

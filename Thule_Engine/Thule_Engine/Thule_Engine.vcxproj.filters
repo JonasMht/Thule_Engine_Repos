@@ -77,9 +77,6 @@
     <ClInclude Include="SpaceEntity.h">
       <Filter>Entities\Game Entities</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source.h">
       <Filter>Header Files</Filter>
     </ClInclude>

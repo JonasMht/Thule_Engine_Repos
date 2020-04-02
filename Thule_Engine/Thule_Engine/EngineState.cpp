@@ -108,18 +108,19 @@ void EngineState::updateWindowDrag()
 
 void EngineState::onMouseScroll(signed char scrollDir, const float& delta)
 {
+	//focus on this part
+	//Implement the lerp fuction form Source.h
 	float mainViewWidt = this->mainView.getSize().x;
 	float zoomFactor = 2.f;//the zoom out factor that is used to find the zoom in factor
-	float upperLimit = 10000.f, lowerLimit = 100.f;
+	float upperLimit = 10000.f, lowerLimit = 50.f;
 
-	float inFactor = ((lowerLimit - mainViewWidt) / (lowerLimit - upperLimit));
-	float outFactor = ((upperLimit - mainViewWidt) / (upperLimit - lowerLimit));
 
-	if (scrollDir > 0)//zoom 
+	if (scrollDir > 0)//zoom
 	{
+		float inFactor = ((lowerLimit - mainViewWidt) / (lowerLimit - upperLimit));
 		//Position before zoom
 		const sf::Vector2f beforeCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
-		this->mainView.zoom(1 + (-1 + 1 / zoomFactor) * inFactor);
+		this->mainView.zoom(1 + (-1 + 1 / zoomFactor) * (1-1/(200*inFactor+1)));
 		//need to set view to update (it is a copy of the view info)
 		this->window->setView(this->mainView);
 		//Position after zoom
@@ -133,13 +134,13 @@ void EngineState::onMouseScroll(signed char scrollDir, const float& delta)
 	}
 	else if (scrollDir < 0)//zoom out
 	{
+		float outFactor = ((upperLimit - mainViewWidt) / (upperLimit - lowerLimit));
+		//Position before zoom
 		const sf::Vector2f beforeCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
-
-		this->mainView.zoom(1 + (zoomFactor - 1) * outFactor);
-
+		this->mainView.zoom(1+(zoomFactor-1) * outFactor);
 		//need to set view to update (it is a copy of the view info)
 		this->window->setView(this->mainView);
-
+		//Position after zoom
 		const sf::Vector2f afterCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
 
 		sf::Vector2f difference = beforeCoord - afterCoord;
@@ -148,9 +149,6 @@ void EngineState::onMouseScroll(signed char scrollDir, const float& delta)
 
 		this->window->setView(this->mainView);
 	}
-	//sf::Vector2f difference = this->mousePosView - this->view
-	std::cout << inFactor << " in \n";
-	std::cout << outFactor << " out \n\n";
 }
 
 void EngineState::update(const float& delta)
