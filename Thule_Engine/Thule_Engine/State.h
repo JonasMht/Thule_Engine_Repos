@@ -19,6 +19,9 @@ protected:
 	sf::Vector2i mousePosWindow;
 	sf::Vector2f mousePosView; //Float Vec2
 
+	sf::Vector2f mouseHoldPos;// saves the location on where the mouse was pressed and hold (allos drag and area selection)
+	bool isMouseHold;
+
 	//Resources
 	std::vector<sf::Texture> textures;
 

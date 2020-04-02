@@ -13,6 +13,8 @@ private:
 	sf::View minimapView;
 	sf::Event event;
 
+	
+
 	/*Private functions*/
 	void initKeybinds();
 	void initSystems();
@@ -28,7 +30,9 @@ public:
 	void endState();
 
 	void updateInput(const float& delta);
+	
 	void onWindowResize();
+	void updateWindowDrag();
 	void onMouseScroll(signed char scrollDir, const float& delta);
 	void update(const float& delta);
 	void render();

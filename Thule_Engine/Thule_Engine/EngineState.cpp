@@ -20,22 +20,22 @@ void EngineState::initKeybinds()
 
 void EngineState::initSystems()
 {
-		Sun* s = new Sun((float)300,(float)300);
+		Sun* s = new Sun((float)300, (float)300);
 		entities.push_back(s);
 		for (int j = 2; j < 10; j++)
 		{
-			Planet* p = new Planet(s, (float)j*30,0);
+			Planet* p = new Planet(s, (float)j * 30, 0);
 			entities.push_back(p);
 		}
 }
 
 void EngineState::initView()
 {
-	float ratio;
-	ratio = (float)this->window->getSize().x / (float)this->window->getSize().y;
+	this->isMouseHold = false;
+	float mainViewRatio = (float)this->window->getSize().y / (float)this->window->getSize().x;
 	this->mainView.setCenter(sf::Vector2f(300, 300));
-	this->mainView.setSize(sf::Vector2f(200*ratio, 200));
-	this->minimapView.setSize(sf::Vector2f(500*ratio, 500));
+	this->mainView.setSize(sf::Vector2f(200, 200* mainViewRatio));
+	this->minimapView.setSize(sf::Vector2f(500, 500* mainViewRatio));
 	this->minimapView.setCenter(sf::Vector2f(300, 300));
 	this->minimapView.setViewport(sf::FloatRect(0.75f, 0, 0.25f, 0.25f));
 	
@@ -60,6 +60,7 @@ EngineState::~EngineState()
 	}
 }
 
+/*Functions*/
 
 void EngineState::endState()
 {
@@ -91,11 +92,74 @@ void EngineState::updateInput(const float& delta)
 	
 }
 
-/*Functions*/
+void EngineState::onWindowResize()
+{
+	this->initView();
+}
+
+void EngineState::updateWindowDrag()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+	{
+		sf::Vector2f difference = this->window->mapPixelToCoords(this->mousePosWindow) - this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
+		this->mainView.move(difference);
+	}
+}
+
+void EngineState::onMouseScroll(signed char scrollDir, const float& delta)
+{
+	float mainViewWidt = this->mainView.getSize().x;
+	float zoomFactor = 2.f;//the zoom out factor that is used to find the zoom in factor
+	float upperLimit = 10000.f, lowerLimit = 100.f;
+
+	float inFactor = ((lowerLimit - mainViewWidt) / (lowerLimit - upperLimit));
+	float outFactor = ((upperLimit - mainViewWidt) / (upperLimit - lowerLimit));
+
+	if (scrollDir > 0)//zoom 
+	{
+		//Position before zoom
+		const sf::Vector2f beforeCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
+		this->mainView.zoom(1 + (-1 + 1 / zoomFactor) * inFactor);
+		//need to set view to update (it is a copy of the view info)
+		this->window->setView(this->mainView);
+		//Position after zoom
+		const sf::Vector2f afterCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
+		
+		sf::Vector2f difference = beforeCoord-afterCoord;
+
+		this->mainView.move(difference);
+
+		this->window->setView(this->mainView);
+	}
+	else if (scrollDir < 0)//zoom out
+	{
+		const sf::Vector2f beforeCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
+
+		this->mainView.zoom(1 + (zoomFactor - 1) * outFactor);
+
+		//need to set view to update (it is a copy of the view info)
+		this->window->setView(this->mainView);
+
+		const sf::Vector2f afterCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
+
+		sf::Vector2f difference = beforeCoord - afterCoord;
+
+		this->mainView.move(difference);
+
+		this->window->setView(this->mainView);
+	}
+	//sf::Vector2f difference = this->mousePosView - this->view
+	std::cout << inFactor << " in \n";
+	std::cout << outFactor << " out \n\n";
+}
+
 void EngineState::update(const float& delta)
 {
-	this->updateMousePositions();
+	
 	this->updateInput(delta);
+	this->updateWindowDrag();
+	this->updateMousePositions();
+	
 
 	for (auto i = entities.begin(); i != entities.end();)
 	{
@@ -109,39 +173,13 @@ void EngineState::update(const float& delta)
 	}
 }
 
-void EngineState::onWindowResize()
-{
-	this->initView();
-}
-
-void EngineState::onMouseScroll(signed char scrollDir, const float& delta)
-{
-	this->window->setView(this->mainView); //set viewport to get data from it
-	
-	
-	sf::Vector2f view_pos= this->window->mapPixelToCoords((sf::Vector2i)this->mainView.getCenter());
-	
-	sf::Vector2f dir_view_to_mouse = sf::Vector2f((this->mousePosView.x - view_pos.x), (this->mousePosView.y - view_pos.y));
-	std::cout << this->mousePosView.x << " " << this->mousePosView.y << "\n";
-	std::cout << dir_view_to_mouse.x << " " << dir_view_to_mouse.y << "\n\n";
-	
-	//this->mainView.move(dir_view_to_mouse);
-
-	/*
-	if (scrollDir==1)
-		this->mainView.zoom(.9f);
-	else
-		this->mainView.zoom(1.1f);
-	*/
-}
-
 void EngineState::render()
 {
 	this->window->setView(this->mainView);
 	for (auto i : entities) i->render(this->window);
 	
 	
-	sf::Vertex* path = NULL;
+	/*sf::Vertex* path = NULL;
 	int a = 200;
 	path = new sf::Vertex[a];
 	for (int q = 0; q < a; q++)
@@ -153,14 +191,16 @@ void EngineState::render()
 
 	this->window->draw(path, a, sf::LineStrip);
 	
-	delete[] path; // mabe a leak
+	delete[] path;*/
 
 	this->window->setView(this->minimapView);
 	sf::RectangleShape background;
 	background.setFillColor(sf::Color(44, 44, 44, 200));
 	background.setPosition(sf::Vector2f(0, 0));
-	background.setSize(sf::Vector2f(this->window->getSize().x, this->window->getSize().y));
+	background.setSize(sf::Vector2f(this->minimapView.getSize().x, this->minimapView.getSize().y));
 	this->window->draw(background);
 	
 	for (auto i : entities) i->render(this->window);
+
+	this->window->setView(this->mainView); //set viewport to get data from it
 }

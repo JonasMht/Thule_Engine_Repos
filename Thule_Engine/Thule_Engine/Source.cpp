@@ -7,3 +7,9 @@ float constrainAngle(float rad_angle)
 		new_angle += 2 * PI;
 	return new_angle;
 }
+
+//approaches end from start with step intervals
+float lerp(float step, float start, float end)
+{
+	return start + (end - start) * step;
+}

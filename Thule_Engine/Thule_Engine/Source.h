@@ -21,3 +21,5 @@
 #define PI 3.141592f
 
 float constrainAngle(float rad_angle);
+
+float lerp(float value, float start, float end);
