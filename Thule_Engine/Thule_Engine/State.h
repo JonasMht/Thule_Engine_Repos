@@ -19,9 +19,6 @@ protected:
 	sf::Vector2i mousePosWindow;
 	sf::Vector2f mousePosView; //Float Vec2
 
-	sf::Vector2f mouseHoldPos;// saves the location on where the mouse was pressed and hold (allos drag and area selection)
-	bool isMouseHold;
-
 	//Resources
 	std::vector<sf::Texture> textures;
 
@@ -34,13 +31,22 @@ public:
 	virtual ~State();
 
 	/*Functions*/
-	const bool& getQuitState();
+	const bool& getQuitState();// returns the quitState value
 
-	virtual void checkForQuitState();
+	virtual void checkForQuitState();// check if quit conditions are met
 
+	/*Mouse Events*/
 	virtual void endState() = 0;
 	virtual void onWindowResize(); //Window resize event
 	virtual void onMouseScroll(signed char scrollDir, const float& delta); //mouse scroll event
+	virtual void onMouseMiddleClick();
+	virtual void onMouseMiddleRelease();
+	virtual void onMouseLeftClick();
+	virtual void onMouseLeftRelease();
+	virtual void onMouseRightClick();
+	virtual void onMouseRightRelease();
+
+	/*Updaters and Renderers*/
 	virtual void updateMousePositions(); // If called updates all 3 mouse pos spaces
 	virtual void updateInput(const float& delta) = 0;
 	virtual void update(const float& delta) = 0; //init to 0 to be sure it's a pure virtual function => means it needs to be defined in a child class.

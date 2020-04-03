@@ -20,22 +20,28 @@ void EngineState::initKeybinds()
 
 void EngineState::initSystems()
 {
-		Sun* s = new Sun((float)300, (float)300);
-		entities.push_back(s);
-		for (int j = 2; j < 10; j++)
-		{
-			Planet* p = new Planet(s, (float)j * 30, 0);
-			entities.push_back(p);
-		}
+	Sun* s = new Sun((float)300, (float)300);
+	entities.push_back(s);
+	Planet* p;
+	for (int j = 2; j < 10; j++)
+	{
+		p = new Planet(s, (float)j * 300, 0);
+		entities.push_back(p);
+	}
+	p = new Planet(p, (float)30, 0);
+	entities.push_back(p);
 }
 
 void EngineState::initView()
 {
-	this->isMouseHold = false;
-	float mainViewRatio = (float)this->window->getSize().y / (float)this->window->getSize().x;
+	this->zoom = 1.f;
+	this->zoomTarget = this->zoom;
+	this->initialWidth = 200.f;
+	this->heightWidthRatio = (float)this->window->getSize().y / (float)this->window->getSize().x;
+	
 	this->mainView.setCenter(sf::Vector2f(300, 300));
-	this->mainView.setSize(sf::Vector2f(200, 200* mainViewRatio));
-	this->minimapView.setSize(sf::Vector2f(500, 500* mainViewRatio));
+	this->mainView.setSize(sf::Vector2f(this->initialWidth, this->initialWidth * heightWidthRatio));
+	this->minimapView.setSize(sf::Vector2f(500, 500* heightWidthRatio));
 	this->minimapView.setCenter(sf::Vector2f(300, 300));
 	this->minimapView.setViewport(sf::FloatRect(0.75f, 0, 0.25f, 0.25f));
 	
@@ -82,14 +88,17 @@ void EngineState::updateInput(const float& delta)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
 		this->mainView.move(100.f * delta, 0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("A"))))
-		if (this->mainView.getSize().x<4000)
-			this->mainView.zoom(1.1f);
+		if (this->mainView.getSize().x < 4000)
+			this->zoomTarget += .01f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("B"))))
-		if (this->mainView.getSize().x>100)
-			this->mainView.zoom(.9f);
-	
-	
-	
+		if (this->mainView.getSize().x > 100)
+			this->zoomTarget -= .01f;
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+	{
+		this->onViewDrag();
+	}
+
 }
 
 void EngineState::onWindowResize()
@@ -97,67 +106,104 @@ void EngineState::onWindowResize()
 	this->initView();
 }
 
-void EngineState::updateWindowDrag()
+void EngineState::onDubbleClick()
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-	{
+
+}
+
+void EngineState::onViewDrag()
+{
 		sf::Vector2f difference = this->window->mapPixelToCoords(this->mousePosWindow) - this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
 		this->mainView.move(difference);
-	}
+		this->window->setView(this->mainView);
 }
+
+/*Mouse Events*/
 
 void EngineState::onMouseScroll(signed char scrollDir, const float& delta)
 {
-	//focus on this part
-	//Implement the lerp fuction form Source.h
-	float mainViewWidt = this->mainView.getSize().x;
-	float zoomFactor = 2.f;//the zoom out factor that is used to find the zoom in factor
-	float upperLimit = 10000.f, lowerLimit = 50.f;
+	float zoomFactor = 10.0f;//zoom in out factor
+	float upperLimit = 100.f, lowerLimit = 0.07f;
 
-
-	if (scrollDir > 0)//zoom
+	if (scrollDir > 0)//zoom in
 	{
-		float inFactor = ((lowerLimit - mainViewWidt) / (lowerLimit - upperLimit));
-		//Position before zoom
-		const sf::Vector2f beforeCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
-		this->mainView.zoom(1 + (-1 + 1 / zoomFactor) * (1-1/(200*inFactor+1)));
-		//need to set view to update (it is a copy of the view info)
-		this->window->setView(this->mainView);
-		//Position after zoom
-		const sf::Vector2f afterCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
-		
-		sf::Vector2f difference = beforeCoord-afterCoord;
-
-		this->mainView.move(difference);
-
-		this->window->setView(this->mainView);
+		if (this->zoomTarget>this->zoom)//Stop zoom activity if the zoom is going opposite to the one to come
+			this->zoomTarget = this->zoom;
+		float inFactor = ((this->zoomTarget - lowerLimit) / (upperLimit - lowerLimit));
+		this->zoomTarget -= zoomFactor * (1 - 1 / (5 * inFactor + 1));
 	}
 	else if (scrollDir < 0)//zoom out
 	{
-		float outFactor = ((upperLimit - mainViewWidt) / (upperLimit - lowerLimit));
+		if (this->zoomTarget < this->zoom)//Stop zoom activity if the zoom is going opposite to the one to come
+			this->zoomTarget = this->zoom;
+		float outFactor = ((upperLimit - this->zoomTarget) / (upperLimit - lowerLimit));
+		this->zoomTarget += zoomFactor * ((1 - 1 / (10 * outFactor + 1)) + (1 + 1.111f / (outFactor - 1.111f)) / 10 );
+	}
+}
+
+void EngineState::onMouseMiddleClick()
+{
+}
+
+void EngineState::onMouseMiddleRelease()
+{
+}
+
+void EngineState::onMouseLeftClick()
+{
+	if (this->clickClock.getElapsedTime().asSeconds() > .3f)
+	{
+		this->clickClock.restart();
+	}
+	else
+	{
+		this->onDubbleClick();
+	}
+}
+
+void EngineState::onMouseLeftRelease()
+{
+}
+
+void EngineState::onMouseRightClick()
+{
+}
+
+
+void EngineState::onMouseRightRelease()
+{
+}
+
+
+/*Updaters and Renderers*/
+void EngineState::updateZoom()
+{
+	if (!isInRange(this->zoom, this->zoomTarget - .01f, this->zoomTarget + .01f))
+	{
 		//Position before zoom
-		const sf::Vector2f beforeCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
-		this->mainView.zoom(1+(zoomFactor-1) * outFactor);
-		//need to set view to update (it is a copy of the view info)
+		const sf::Vector2f beforeCoord{ this->mousePosView };
+
+		//smooth zoom in
+		this->zoom = lerp(.1f, this->zoom, this->zoomTarget);//zoom in
+		sf::Vector2f newScale{ this->initialWidth * this->zoom,
+			this->initialWidth * this->heightWidthRatio * this->zoom };
+		this->mainView.setSize(newScale);
+
 		this->window->setView(this->mainView);
 		//Position after zoom
-		const sf::Vector2f afterCoord{ this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)) };
-
+		const sf::Vector2f afterCoord{ this->window->mapPixelToCoords(this->mousePosWindow) };
+		//Differcence between former position and new position
 		sf::Vector2f difference = beforeCoord - afterCoord;
 
 		this->mainView.move(difference);
-
-		this->window->setView(this->mainView);
 	}
 }
 
 void EngineState::update(const float& delta)
 {
-	
 	this->updateInput(delta);
-	this->updateWindowDrag();
 	this->updateMousePositions();
-	
+	this->updateZoom();
 
 	for (auto i = entities.begin(); i != entities.end();)
 	{

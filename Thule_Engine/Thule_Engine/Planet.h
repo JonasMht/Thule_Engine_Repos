@@ -9,14 +9,22 @@ class Planet :
 {
 private:
 	/*Variables*/
-	float radius, rad_angle; //angle are in rad;
+	float distance, rad_angle; //angle are in rad;
 	SpaceEntity* G;//Object the Planet is attracted to
 	sf::CircleShape shape; //placeholder
+
+	sf::Vertex* path = NULL;
+	int sections = (int)distance / 7 + 40;
+
 public:
+
+	void initTrajectory();
+
 	/*Constructors Destructors*/
-	Planet(SpaceEntity* G, float radius, float rad_angle);
+	Planet(SpaceEntity* G, float distance, float rad_angle);
 	virtual ~Planet();
 
+	void updateTrajectory();
 	void update(const float& delta);
 	void render(sf::RenderTarget* target);
 

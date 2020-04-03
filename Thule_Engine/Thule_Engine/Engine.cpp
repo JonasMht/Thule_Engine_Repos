@@ -13,6 +13,8 @@ void Engine::initWindow()
     sf::VideoMode window_bounds(800,600); //base opening window bounds
     unsigned framerate_limit = 120;
     bool vertical_sync_enabled = false;
+    unsigned char antialiasingLevel=0;
+    
 
 
     if (ifs.is_open())
@@ -21,13 +23,19 @@ void Engine::initWindow()
         std::getline(ifs, title);
         ifs >> window_bounds.width >> window_bounds.height;
         ifs >> framerate_limit;
+        ifs >> antialiasingLevel;
         ifs >> vertical_sync_enabled;
     }
     ifs.close();
 
-	this->window = new sf::RenderWindow(window_bounds, title);
+    this->settings.antialiasingLevel = antialiasingLevel;
+
+	this->window = new sf::RenderWindow(window_bounds, title,sf::Style::Default, this->settings);
     this->window->setFramerateLimit(framerate_limit);
     this->window->setVerticalSyncEnabled(vertical_sync_enabled);
+
+    
+
 
 
 }
@@ -107,14 +115,33 @@ void Engine::updateEvents()
             this->window->close();
 
         //Test for mouse scroll
-        if (this->event.type == sf::Event::MouseWheelMoved)
+        else if (this->event.type == sf::Event::MouseWheelScrolled)
         {
-            this->states.top()->onMouseScroll(event.mouseWheel.delta, this->delta);
+            this->states.top()->onMouseScroll(event.mouseWheelScroll.delta, this->delta);
         }
-        if (event.type == sf::Event::Resized)
+        else if (this->event.type == this->event.MouseButtonReleased)
+        {
+            if (this->event.mouseButton.button == sf::Mouse::Right)
+                this->states.top()->onMouseRightRelease();
+            else if (this->event.mouseButton.button == sf::Mouse::Left)
+                this->states.top()->onMouseLeftRelease();
+            else if (this->event.mouseButton.button == sf::Mouse::Middle)
+                this->states.top()->onMouseMiddleRelease();
+        }
+        else if (this->event.type == this->event.MouseButtonPressed)
+        {
+            if (this->event.mouseButton.button == sf::Mouse::Right)
+                this->states.top()->onMouseRightClick();
+            else if (this->event.mouseButton.button == sf::Mouse::Left)
+                this->states.top()->onMouseLeftClick();
+            else if (this->event.mouseButton.button == sf::Mouse::Middle)
+                this->states.top()->onMouseMiddleClick();
+        }
+        
+        else if (event.type == sf::Event::Resized)
         {
             // update the view to the new size of the window
-            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            sf::FloatRect visibleArea(0, 0, (float)event.size.width, (float)event.size.height);
             this->window->setView(sf::View(visibleArea));
             this->states.top()->onWindowResize();
             std::cout << "window resize\n";

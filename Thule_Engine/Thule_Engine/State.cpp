@@ -30,6 +30,31 @@ void State::onMouseScroll(signed char scrollDir, const float& delta)
 {
 }
 
+void State::onMouseMiddleClick()
+{
+}
+
+void State::onMouseMiddleRelease()
+{
+}
+
+void State::onMouseLeftClick()
+{
+}
+
+
+void State::onMouseLeftRelease()
+{
+}
+
+void State::onMouseRightClick()
+{
+}
+
+void State::onMouseRightRelease()
+{
+}
+
 void State::updateMousePositions()
 {
 	this->mousePosWindow = sf::Mouse::getPosition(*this->window);

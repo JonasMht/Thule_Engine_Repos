@@ -23,3 +23,5 @@
 float constrainAngle(float rad_angle);
 
 float lerp(float value, float start, float end);
+
+bool isInRange(float x, float a, float b);

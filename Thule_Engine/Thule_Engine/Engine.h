@@ -10,6 +10,8 @@ class Engine
 private:
 	/*Variables*/
 	sf::RenderWindow *window;
+	sf::ContextSettings settings;
+
 	sf::Event event;
 
 	sf::Clock deltaClock;

@@ -13,3 +13,8 @@ float lerp(float step, float start, float end)
 {
 	return start + (end - start) * step;
 }
+
+bool isInRange(float x, float min, float max)
+{
+	return (x>min)&&(x<max);
+}
