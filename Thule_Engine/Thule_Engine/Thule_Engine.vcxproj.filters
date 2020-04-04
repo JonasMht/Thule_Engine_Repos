@@ -30,9 +30,6 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EngineState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
       <Filter>States</Filter>
     </ClCompile>
@@ -54,13 +51,13 @@
     <ClCompile Include="State.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineState.h">
-      <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="MainMenuState.h">
       <Filter>States</Filter>
@@ -82,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

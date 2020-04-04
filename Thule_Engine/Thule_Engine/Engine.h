@@ -13,7 +13,8 @@ private:
 	sf::ContextSettings settings;
 
 	sf::Event event;
-
+	
+	//Count time between loops/frames
 	sf::Clock deltaClock;
 	float delta;
 

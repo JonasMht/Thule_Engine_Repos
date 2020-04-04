@@ -1,10 +1,10 @@
-#ifndef ENGINESTATE_H
-#define ENGINESTATE_H
+#ifndef GAMEESTATE_H
+#define GAMEESTATE_H
 
 #include "State.h"
 
 
-class EngineState :
+class GameState :
 	public State
 {
 private:
@@ -26,8 +26,8 @@ private:
 public:
 
 	/*Constructors Destructors*/
-	EngineState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys);
-	virtual ~EngineState();
+	GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys);
+	virtual ~GameState();
 
 	/*Functions*/
 	void endState(); // called at the end of this entity
@@ -56,4 +56,4 @@ public:
 
 };
 
-#endif // !ENGINESTATE_H
+#endif // !GAMEESTATE_H

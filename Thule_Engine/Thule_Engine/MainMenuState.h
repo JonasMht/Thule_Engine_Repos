@@ -1,7 +1,7 @@
 #ifndef MAINMENUSTATE_H
 #define MAINMENUSTATE_H
 
-#include "EngineState.h"
+#include "GameState.h"
 
 class MainMenuState :
 	public State

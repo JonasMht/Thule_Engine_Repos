@@ -1,7 +1,7 @@
-#include "EngineState.h"
+#include "GameState.h"
 
 /*Private functions*/
-void EngineState::initKeybinds()
+void GameState::initKeybinds()
 {
 	//init keybinds from enginestate_keybinds.ini file
 	std::ifstream ifs("Config/enginestate_keybinds.ini");
@@ -18,7 +18,7 @@ void EngineState::initKeybinds()
 	ifs.close();
 }
 
-void EngineState::initSystems()
+void GameState::initSystems()
 {
 	Sun* s = new Sun((float)300, (float)300);
 	entities.push_back(s);
@@ -32,7 +32,7 @@ void EngineState::initSystems()
 	entities.push_back(p);
 }
 
-void EngineState::initView()
+void GameState::initView()
 {
 	this->zoom = 1.f;
 	this->zoomTarget = this->zoom;
@@ -48,7 +48,7 @@ void EngineState::initView()
 }
 
 /*Constructors Destructors*/
-EngineState::EngineState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys)
+GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys)
 	: State(window, supportedKeys)
 {
 	this->initKeybinds();
@@ -56,7 +56,7 @@ EngineState::EngineState(sf::RenderWindow* window, std::map<std::string, int>* s
 	this->initView();
 }
 
-EngineState::~EngineState()
+GameState::~GameState()
 {
 	for (auto i = entities.begin(); i != entities.end();)
 	{
@@ -68,13 +68,13 @@ EngineState::~EngineState()
 
 /*Functions*/
 
-void EngineState::endState()
+void GameState::endState()
 {
 	//do things at the end of the state, ex: save
 	std::cout << "End of State\n";
 }
 
-void EngineState::updateInput(const float& delta)
+void GameState::updateInput(const float& delta)
 {
 	this->checkForQuitState();
 	
@@ -101,17 +101,17 @@ void EngineState::updateInput(const float& delta)
 
 }
 
-void EngineState::onWindowResize()
+void GameState::onWindowResize()
 {
 	this->initView();
 }
 
-void EngineState::onDubbleClick()
+void GameState::onDubbleClick()
 {
 
 }
 
-void EngineState::onViewDrag()
+void GameState::onViewDrag()
 {
 		sf::Vector2f difference = this->window->mapPixelToCoords(this->mousePosWindow) - this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
 		this->mainView.move(difference);
@@ -120,7 +120,7 @@ void EngineState::onViewDrag()
 
 /*Mouse Events*/
 
-void EngineState::onMouseScroll(signed char scrollDir, const float& delta)
+void GameState::onMouseScroll(signed char scrollDir, const float& delta)
 {
 	float zoomFactor = 10.0f;//zoom in out factor
 	float upperLimit = 100.f, lowerLimit = 0.07f;
@@ -141,15 +141,15 @@ void EngineState::onMouseScroll(signed char scrollDir, const float& delta)
 	}
 }
 
-void EngineState::onMouseMiddleClick()
+void GameState::onMouseMiddleClick()
 {
 }
 
-void EngineState::onMouseMiddleRelease()
+void GameState::onMouseMiddleRelease()
 {
 }
 
-void EngineState::onMouseLeftClick()
+void GameState::onMouseLeftClick()
 {
 	if (this->clickClock.getElapsedTime().asSeconds() > .3f)
 	{
@@ -161,22 +161,22 @@ void EngineState::onMouseLeftClick()
 	}
 }
 
-void EngineState::onMouseLeftRelease()
+void GameState::onMouseLeftRelease()
 {
 }
 
-void EngineState::onMouseRightClick()
+void GameState::onMouseRightClick()
 {
 }
 
 
-void EngineState::onMouseRightRelease()
+void GameState::onMouseRightRelease()
 {
 }
 
 
 /*Updaters and Renderers*/
-void EngineState::updateZoom()
+void GameState::updateZoom()
 {
 	if (!isInRange(this->zoom, this->zoomTarget - .01f, this->zoomTarget + .01f))
 	{
@@ -199,7 +199,7 @@ void EngineState::updateZoom()
 	}
 }
 
-void EngineState::update(const float& delta)
+void GameState::update(const float& delta)
 {
 	this->updateInput(delta);
 	this->updateMousePositions();
@@ -217,7 +217,7 @@ void EngineState::update(const float& delta)
 	}
 }
 
-void EngineState::render()
+void GameState::render()
 {
 	this->window->setView(this->mainView);
 	for (auto i : entities) i->render(this->window);

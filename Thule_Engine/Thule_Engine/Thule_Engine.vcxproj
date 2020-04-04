@@ -147,7 +147,7 @@
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="EngineState.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpaceEntity.cpp" />
     <ClCompile Include="Sun.cpp" />
@@ -159,7 +159,7 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="EngineState.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="SpaceEntity.h" />
     <ClInclude Include="Sun.h" />
