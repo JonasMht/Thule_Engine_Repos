@@ -13,7 +13,7 @@ private:
 	sf::ContextSettings settings;
 
 	sf::Event event;
-	
+
 	//Count time between loops/frames
 	sf::Clock deltaClock;
 	float delta;
@@ -22,9 +22,10 @@ private:
 
 
 	std::stack<State*> states; //stacks can be moved and popped
-	
+	std::stack<unsigned char> engineEvents;//is passed into entitiess such as butons htat insert a number coresponding to a definded event which gets handled by the Engine entity
+
 	std::map<std::string, int> supportedKeys;//array with keys rather than indexes
-	
+
 	/*Initialization*/
 	void initWindow();
 	void initKeys();

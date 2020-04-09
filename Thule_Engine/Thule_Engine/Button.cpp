@@ -2,8 +2,7 @@
 
 
 Button::Button(float x_pos, float y_pos, float width, float height,
-	sf::Font* font, std::string text,
-	sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor)
+	sf::Font* font, std::string text)
 {
 	this->buttonState = BTN_IDLE;
 
@@ -20,9 +19,9 @@ Button::Button(float x_pos, float y_pos, float width, float height,
 		this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f) - (this->text.getGlobalBounds().height / 2.f)
 		);//center the text
 
-	this->idleColor = idleColor;
-	this->hoverColor = hoverColor;
-	this->activeColor = activeColor;
+	this->idleColor = sf::Color(50,120,150,255);
+	this->hoverColor = sf::Color(70,160,210,255);
+	this->activeColor = sf::Color(50,120,150,230);
 	this->shape.setFillColor(this->idleColor); //using pointers to link dynamicaly > ease of switching colors
 }
 
@@ -72,5 +71,4 @@ void Button::render(sf::RenderTarget* target)
 {
 	target->draw(this->shape);
 	target->draw(this->text);
-
 }

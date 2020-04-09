@@ -47,7 +47,7 @@ void GameState::initView()
 	this->zoomTarget = this->zoom;
 	this->initialWidth = 200.f;
 	this->heightWidthRatio = (float)this->window->getSize().y / (float)this->window->getSize().x;
-	
+
 	this->mainView.setCenter(sf::Vector2f(300, 300));
 	this->mainView.setSize(sf::Vector2f(this->initialWidth, this->initialWidth * heightWidthRatio));
 }
@@ -87,7 +87,7 @@ void GameState::endState()
 void GameState::updateInput(const float& delta)
 {
 	this->checkForQuitState();
-	
+
 	//Update key layouts
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
 		this->mainView.move(0.f, -100.f * this->zoom *delta);
@@ -104,7 +104,7 @@ void GameState::updateInput(const float& delta)
 		if (this->mainView.getSize().x > 100)
 			this->zoomTarget -= .1f;
 	this->window->setView(this->mainView);
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
 		this->onViewDrag();
 	}

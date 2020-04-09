@@ -36,14 +36,11 @@ void MainMenuState::initButtons()
 	sf::Color activeColor = sf::Color(50, 50, 70, 200);
 
 	this->buttons["ENGINE_BTN"] = new Button(200, 200, 150, 40,
-		&this->font, "THULE ENGINE v0.1",
-		idleColor, hoverColor, activeColor);
+		&this->font, "THULE ENGINE v0.1");
 	this->buttons["MAINMENU_BTN"] = new Button(200, 270, 150, 40,
-		&this->font, "MAIN MENU",
-		idleColor, hoverColor, activeColor);
+		&this->font, "MAIN MENU");
 	this->buttons["EXITDESKTOP_BTN"] = new Button(200, 340, 150, 40,
-		&this->font, "BACK TO DESKTOP",
-		idleColor, hoverColor, activeColor);
+		&this->font, "BACK TO DESKTOP");
 }
 
 /*Constructors Destructors*/

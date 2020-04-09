@@ -6,7 +6,7 @@ GameUI::GameUI(sf::Font* font)
 {
 	this->font = font;
 
-	Button* b = new Button(100, 100, 100,100,font,"YES",sf::Color(0, 150, 255), sf::Color(85, 185, 255), sf::Color(0, 135, 230, 210));
+	Button* b = new Button(100, 100, 100,100,font,"ACTIVATE");
 	this->UiEntities.push_back(b);
 }
 

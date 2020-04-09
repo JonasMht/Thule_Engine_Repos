@@ -1,1 +1,3 @@
-".dll" are the dynamicaly linked files
+".dll" are the dynamicaly linked files.
+".cbP", ".depend" and ".layout" are Code::Blocks project management files.
+".sln" are Visual Studio project management files.

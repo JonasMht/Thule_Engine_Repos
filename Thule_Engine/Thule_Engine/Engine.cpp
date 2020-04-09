@@ -8,7 +8,7 @@ void Engine::initWindow()
     //Create a SFML window using options from the window.ini file
 
     std::ifstream ifs("Config/window.ini");
-    
+
     std::string title = "Thule Engine";
     sf::VideoMode window_bounds(800,600); //base opening window bounds
     unsigned framerate_limit = 120;
@@ -72,6 +72,8 @@ Engine::Engine() //Constructor
     this->initWindow();
     this->initKeys();
     this->initStates();
+    unsigned char ev = 0;
+    this->engineEvents.push(ev);
 }
 
 Engine::~Engine() //Destructor
@@ -129,7 +131,7 @@ void Engine::updateEvents()
             else if (this->event.mouseButton.button == sf::Mouse::Middle)
                 this->states.top()->onMouseMiddleRelease();
         }
-        else if (event.type == sf::Event::Resized)
+        else if (this->event.type == sf::Event::Resized)
         {
             // update the view to the new size of the window
             sf::FloatRect visibleArea(0, 0, (float)event.size.width, (float)event.size.height);
@@ -138,6 +140,16 @@ void Engine::updateEvents()
             //DEBUG : REMOVE LATER
             std::cout << "window resize\n";
         }
+    }
+
+    //Engine specific events
+    while(!this->engineEvents.empty())
+    {
+        if(this->engineEvents.top() == 0)
+        {
+            std::cout<<"Dummy event n.0\n";
+        }
+        this->engineEvents.pop();
     }
 }
 
@@ -168,7 +180,7 @@ void Engine::update()
 void Engine::render()
 {
     this->window->clear(sf::Color::Black);
-    
+
     //Render items
     if (!this->states.empty())
         this->states.top()->render();

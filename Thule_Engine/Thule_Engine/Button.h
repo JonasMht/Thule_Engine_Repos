@@ -24,8 +24,7 @@ public:
 
 	/*Constructors Destructors*/
 	Button(float x_pos, float y_pos, float width, float height,
-		sf::Font* font, std::string text,
-		sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
+		sf::Font* font, std::string text);
 	virtual ~Button();
 
 	/*Accessors*/
@@ -34,6 +33,8 @@ public:
 
 
 	/*Functions*/
+
+	/*Updater Renderers*/
 	void update(const sf::Vector2f& mousePosWindow);
 	void render(sf::RenderTarget* target);
 };
