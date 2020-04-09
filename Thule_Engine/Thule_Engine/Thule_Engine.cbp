@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ThuleEngine" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug x64">
+				<Option output="Thule_Engine" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+				</Compiler>
+			</Target>
+			<Target title="Release x64">
+				<Option output="Thule_Engine" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+				</Compiler>
+			</Target>
+			<Target title="Release Win32">
+				<Option output="Thule_Engine" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DWIN32" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add directory="$(SolutionDir)/External/SFML/include" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics.lib" />
+					<Add library="sfml-audio.lib" />
+					<Add library="sfml-network.lib" />
+					<Add library="sfml-window.lib" />
+					<Add library="sfml-system.lib" />
+					<Add directory="$(SolutionDir)/External/SFML/lib" />
+				</Linker>
+			</Target>
+			<Target title="Debug Win32">
+				<Option output="Thule_Engine" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DWIN32" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add directory="$(SolutionDir)/External/SFML/include" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics-d.lib" />
+					<Add library="sfml-audio-d.lib" />
+					<Add library="sfml-network-d.lib" />
+					<Add library="sfml-window-d.lib" />
+					<Add library="sfml-system-d.lib" />
+					<Add directory="$(SolutionDir)/External/SFML/lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="Button.cpp" />
+		<Unit filename="Button.h" />
+		<Unit filename="Engine.cpp" />
+		<Unit filename="Engine.h" />
+		<Unit filename="Entity.cpp" />
+		<Unit filename="Entity.h" />
+		<Unit filename="GameState.cpp" />
+		<Unit filename="GameState.h" />
+		<Unit filename="GameUI.cpp" />
+		<Unit filename="GameUI.h" />
+		<Unit filename="MainMenuState.cpp" />
+		<Unit filename="MainMenuState.h" />
+		<Unit filename="Planet.cpp" />
+		<Unit filename="Planet.h" />
+		<Unit filename="Source.cpp" />
+		<Unit filename="Source.h" />
+		<Unit filename="State.cpp" />
+		<Unit filename="State.h" />
+		<Unit filename="Sun.cpp" />
+		<Unit filename="Sun.h" />
+		<Unit filename="UiEntity.cpp" />
+		<Unit filename="UiEntity.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
