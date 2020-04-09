@@ -1,7 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "Button.h"
+#include "Sun.h"
 
 //Manage loaded files in memory
 class State
@@ -15,6 +15,9 @@ protected:
 	bool quitState; // deletes the state in engine loop if true
 	//bool quitApplication; // deletes the state in engine loop if true // mabe add it if needed
 
+	UiEntity* UI;
+	sf::View UiView;
+
 	sf::Vector2i mousePosScreen; //Integer Vec2
 	sf::Vector2i mousePosWindow;
 	sf::Vector2f mousePosView; //Float Vec2
@@ -22,10 +25,11 @@ protected:
 	//Resources
 	std::vector<sf::Texture> textures;
 
-	/*Private functions*/
+public:
+	/*Initialization*/
+	virtual void initUiView();
 	virtual void initKeybinds() = 0;
 
-public:
 	/*Constructors Destructors*/
 	State(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys);
 	virtual ~State();
@@ -35,10 +39,10 @@ public:
 
 	virtual void checkForQuitState();// check if quit conditions are met
 
-	/*Mouse Events*/
+	/*Events*/
 	virtual void endState() = 0;
 	virtual void onWindowResize(); //Window resize event
-	virtual void onMouseScroll(signed char scrollDir, const float& delta); //mouse scroll event
+	virtual void onMouseScroll(const float scrollDir, const float& delta); //mouse scroll event
 	virtual void onMouseMiddleClick();
 	virtual void onMouseMiddleRelease();
 	virtual void onMouseLeftClick();

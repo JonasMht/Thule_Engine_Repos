@@ -8,17 +8,21 @@ class GameState :
 	public State
 {
 private:
-	std::list<SpaceEntity*> entities;
+	/*Variables*/
+	std::list<Entity*> entities;
+	sf::Font font;
+
 	sf::View mainView;
-	sf::View minimapView;
 	sf::Event event;
 
+	sf::Clock stateClock;
 
 	float zoom, zoomTarget, initialWidth, heightWidthRatio;
-	float doubleClickTimer = 0;
-	sf::Clock clickClock;
+	sf::Time clickTime;
+	
 
 	/*Private functions*/
+	void initFonts();
 	void initKeybinds();
 	void initSystems();
 	void initView();
@@ -40,7 +44,7 @@ public:
 	void onViewDrag();
 	
 	/*Mouse Events*/
-	void onMouseScroll(signed char scrollDir, const float& delta);
+	void onMouseScroll(const float scrollDir, const float& delta);
 	void onMouseMiddleClick();
 	void onMouseMiddleRelease();
 	void onMouseLeftClick();

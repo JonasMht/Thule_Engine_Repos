@@ -18,6 +18,8 @@ private:
 	sf::Clock deltaClock;
 	float delta;
 
+	sf::Clock runTime;
+
 
 	std::stack<State*> states; //stacks can be moved and popped
 	

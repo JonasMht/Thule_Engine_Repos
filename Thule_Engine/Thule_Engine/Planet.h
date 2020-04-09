@@ -2,15 +2,15 @@
 #define SPACEENTITY_H
 
 
-#include "SpaceEntity.h"
+#include "GameUI.h"
 
 class Planet :
-	public SpaceEntity
+	public Entity
 {
 private:
 	/*Variables*/
 	float distance, rad_angle; //angle are in rad;
-	SpaceEntity* G;//Object the Planet is attracted to
+	Entity* G;//Object the Planet is attracted to
 	sf::CircleShape shape; //placeholder
 
 	sf::Vertex* path = NULL;
@@ -21,8 +21,13 @@ public:
 	void initTrajectory();
 
 	/*Constructors Destructors*/
-	Planet(SpaceEntity* G, float distance, float rad_angle);
+	Planet(Entity* G, float distance, float rad_angle);
 	virtual ~Planet();
+
+	/*Functions*/
+	void putToSleep(sf::Time& runTime);
+	void wake(sf::Time& runTime);
+
 
 	void updateTrajectory();
 	void update(const float& delta);

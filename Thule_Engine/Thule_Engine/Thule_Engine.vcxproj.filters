@@ -22,6 +22,12 @@
     <Filter Include="Entities\Game Entities">
       <UniqueIdentifier>{caf2c355-5546-485e-9e12-bafe50bf79c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities\BluePrints">
+      <UniqueIdentifier>{3a7f52a4-428c-43e2-94e3-f8a61f270a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\UI_Entities">
+      <UniqueIdentifier>{60dbfe4b-d328-4ca9-81b3-851d79e07e54}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,9 +48,6 @@
     <ClCompile Include="Sun.cpp">
       <Filter>Entities\Game Entities</Filter>
     </ClCompile>
-    <ClCompile Include="SpaceEntity.cpp">
-      <Filter>Entities\Game Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -53,6 +56,15 @@
     </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Entities\BluePrints</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI.cpp">
+      <Filter>Entities\UI_Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="UiEntity.cpp">
+      <Filter>Entities\BluePrints</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -71,9 +83,6 @@
     <ClInclude Include="Sun.h">
       <Filter>Entities\Game Entities</Filter>
     </ClInclude>
-    <ClInclude Include="SpaceEntity.h">
-      <Filter>Entities\Game Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Source.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -82,6 +91,15 @@
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Entities\BluePrints</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI.h">
+      <Filter>Entities\UI_Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="UiEntity.h">
+      <Filter>Entities\BluePrints</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

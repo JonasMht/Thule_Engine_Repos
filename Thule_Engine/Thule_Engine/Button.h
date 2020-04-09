@@ -1,16 +1,16 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "Sun.h"
+#include "UiEntity.h"
 
 enum button_states {BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE};// sets values for const values n+1 starting at 0;
 
-class Button
+class Button :
+	public UiEntity
 {
 private:
 	/*Variables*/
 	unsigned char buttonState;
-
 
 	sf::RectangleShape shape;
 	sf::Font* font;
@@ -34,7 +34,7 @@ public:
 
 
 	/*Functions*/
-	void update(const sf::Vector2f mousePosView);
+	void update(const sf::Vector2f& mousePosWindow);
 	void render(sf::RenderTarget* target);
 };
 

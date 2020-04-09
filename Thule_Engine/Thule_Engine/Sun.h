@@ -5,11 +5,13 @@
 
 
 class Sun :
-	public SpaceEntity //Base class for all objects
+	public Entity //Base class for all objects
 {
 private:
 protected: // variables can be accessed in child class (not like private variable)
 	sf::CircleShape shape; //placeholder
+
+	std::list<Entity*> system;
 
 public:
 	/*Constructors Destructors*/

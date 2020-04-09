@@ -1,6 +1,15 @@
 #include "GameState.h"
 
 /*Private functions*/
+
+void GameState::initFonts()
+{
+	if (!this->font.loadFromFile("Fonts/Orbitron/Orbitron-Regular.ttf"))
+	{
+		throw("ERROR::MAINMENUSTATE::COULD NOT LOAD FONT");
+	}
+}
+
 void GameState::initKeybinds()
 {
 	//init keybinds from enginestate_keybinds.ini file
@@ -21,15 +30,15 @@ void GameState::initKeybinds()
 void GameState::initSystems()
 {
 	Sun* s = new Sun((float)300, (float)300);
-	entities.push_back(s);
+	this->entities.push_back(s);
 	Planet* p;
 	for (int j = 2; j < 10; j++)
 	{
 		p = new Planet(s, (float)j * 300, 0);
-		entities.push_back(p);
+		this->entities.push_back(p);
 	}
 	p = new Planet(p, (float)30, 0);
-	entities.push_back(p);
+	this->entities.push_back(p);
 }
 
 void GameState::initView()
@@ -41,29 +50,30 @@ void GameState::initView()
 	
 	this->mainView.setCenter(sf::Vector2f(300, 300));
 	this->mainView.setSize(sf::Vector2f(this->initialWidth, this->initialWidth * heightWidthRatio));
-	this->minimapView.setSize(sf::Vector2f(500, 500* heightWidthRatio));
-	this->minimapView.setCenter(sf::Vector2f(300, 300));
-	this->minimapView.setViewport(sf::FloatRect(0.75f, 0, 0.25f, 0.25f));
-	
 }
 
 /*Constructors Destructors*/
 GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys)
 	: State(window, supportedKeys)
 {
+	this->clickTime = this->stateClock.getElapsedTime();
+	this->initFonts();
 	this->initKeybinds();
 	this->initSystems();
 	this->initView();
+
+	this->UI = new GameUI(&this->font);//share by pointer
 }
 
 GameState::~GameState()
 {
-	for (auto i = entities.begin(); i != entities.end();)
+	for (auto i = this->entities.begin(); i != this->entities.end();)
 	{
-		SpaceEntity* e = *i;
+		Entity* e = *i;
 		delete e;
 		i++;
 	}
+	delete this->UI;
 }
 
 /*Functions*/
@@ -80,20 +90,20 @@ void GameState::updateInput(const float& delta)
 	
 	//Update key layouts
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
-		this->mainView.move(0.f, -100.f *delta);
+		this->mainView.move(0.f, -100.f * this->zoom *delta);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
-		this->mainView.move(0.f, 100.f * delta);
+		this->mainView.move(0.f, 100.f * this->zoom * delta);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
-		this->mainView.move(-100.f * delta, 0.f);
+		this->mainView.move(-100.f * this->zoom * delta, 0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
-		this->mainView.move(100.f * delta, 0.f);
+		this->mainView.move(100.f * this->zoom * delta, 0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("A"))))
 		if (this->mainView.getSize().x < 4000)
-			this->zoomTarget += .01f;
+			this->zoomTarget += .1f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("B"))))
 		if (this->mainView.getSize().x > 100)
-			this->zoomTarget -= .01f;
-
+			this->zoomTarget -= .1f;
+	this->window->setView(this->mainView);
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
 	{
 		this->onViewDrag();
@@ -104,6 +114,7 @@ void GameState::updateInput(const float& delta)
 void GameState::onWindowResize()
 {
 	this->initView();
+	this->initUiView();
 }
 
 void GameState::onDubbleClick()
@@ -120,7 +131,7 @@ void GameState::onViewDrag()
 
 /*Mouse Events*/
 
-void GameState::onMouseScroll(signed char scrollDir, const float& delta)
+void GameState::onMouseScroll(const float scrollDir, const float& delta)
 {
 	float zoomFactor = 10.0f;//zoom in out factor
 	float upperLimit = 100.f, lowerLimit = 0.07f;
@@ -151,12 +162,13 @@ void GameState::onMouseMiddleRelease()
 
 void GameState::onMouseLeftClick()
 {
-	if (this->clickClock.getElapsedTime().asSeconds() > .3f)
+	if (this->stateClock.getElapsedTime().asSeconds() - this->clickTime.asSeconds() > .3f)
 	{
-		this->clickClock.restart();
+		this->clickTime = this->stateClock.getElapsedTime();
 	}
 	else
 	{
+		std::cout << "Doubble click! \n";
 		this->onDubbleClick();
 	}
 }
@@ -205,46 +217,27 @@ void GameState::update(const float& delta)
 	this->updateMousePositions();
 	this->updateZoom();
 
-	for (auto i = entities.begin(); i != entities.end();)
+	for (auto i = this->entities.begin(); i != this->entities.end();)
 	{
-		SpaceEntity* e = *i;
+		Entity* e = *i;
 
 		e->update(delta);
 		//e->anim.update(delta);
 
-		if (e->life == false) { i = entities.erase(i); delete e; }
+		if (e->life == false) { i = this->entities.erase(i); delete e; }
 		else i++;
 	}
+
+	this->UI->update((sf::Vector2f)this->mousePosWindow);
 }
 
 void GameState::render()
 {
 	this->window->setView(this->mainView);
-	for (auto i : entities) i->render(this->window);
-	
-	
-	/*sf::Vertex* path = NULL;
-	int a = 200;
-	path = new sf::Vertex[a];
-	for (int q = 0; q < a; q++)
-	{
-		float angle = (q / (float)a) * PI;
-		path[q] = sf::Vertex(sf::Vector2f(q*cos(angle)+400, q*sin(angle)+300));
-		path[q].color = sf::Color(q, 255 - q, q, 200);
-	}
+	for (auto i : this->entities) i->render(this->window);
 
-	this->window->draw(path, a, sf::LineStrip);
-	
-	delete[] path;*/
-
-	this->window->setView(this->minimapView);
-	sf::RectangleShape background;
-	background.setFillColor(sf::Color(44, 44, 44, 200));
-	background.setPosition(sf::Vector2f(0, 0));
-	background.setSize(sf::Vector2f(this->minimapView.getSize().x, this->minimapView.getSize().y));
-	this->window->draw(background);
-	
-	for (auto i : entities) i->render(this->window);
+	this->window->setView(this->UiView); // define the UI view
+	this->UI->render(this->window);
 
 	this->window->setView(this->mainView); //set viewport to get data from it
 }

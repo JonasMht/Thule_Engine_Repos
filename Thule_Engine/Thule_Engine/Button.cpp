@@ -41,7 +41,7 @@ bool Button::isPressed()
 
 /*Functions*/
 
-void Button::update(const sf::Vector2f mousePosView)
+void Button::update(const sf::Vector2f& mousePosWindow)
 {
 	//Update the booleans for hover and active
 
@@ -52,7 +52,7 @@ void Button::update(const sf::Vector2f mousePosView)
 	stateColor = this->idleColor;
 
 	//check if hovered
-	if (this->shape.getGlobalBounds().contains(mousePosView))
+	if (this->shape.getGlobalBounds().contains(mousePosWindow))
 	{
 		this->buttonState = BTN_HOVER;
 		stateColor = this->hoverColor;

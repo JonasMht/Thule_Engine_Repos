@@ -2,11 +2,11 @@
 
 void Planet::initTrajectory()
 {
-	this->sections = (int)this->distance / 10 + 75;
+	this->sections = (int)this->distance / 10 + 60;
 	path = new sf::Vertex[this->sections];
 }
 
-Planet::Planet(SpaceEntity* G, float distance, float rad_angle)
+Planet::Planet(Entity* G, float distance, float rad_angle)
 {
 	this->distance = distance;
 	this->rad_angle = rad_angle;
@@ -23,6 +23,15 @@ Planet::Planet(SpaceEntity* G, float distance, float rad_angle)
 Planet::~Planet()
 {
 	delete[] path;
+}
+/*Functions*/
+
+void Planet::putToSleep(sf::Time& runTime)
+{
+}
+
+void Planet::wake(sf::Time& runTime)
+{
 }
 
 void Planet::updateTrajectory()

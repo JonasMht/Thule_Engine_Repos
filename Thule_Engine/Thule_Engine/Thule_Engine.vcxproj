@@ -148,24 +148,28 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="SpaceEntity.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Planet.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="UiEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameUI.h" />
     <ClInclude Include="Source.h" />
-    <ClInclude Include="SpaceEntity.h" />
     <ClInclude Include="Sun.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="UiEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
