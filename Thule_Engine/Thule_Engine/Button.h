@@ -8,11 +8,13 @@ class Button :
 {
 private:
 	/*Variables*/
-	unsigned char buttonState;
+	bool wasClicked;
 
 	sf::RectangleShape shape;
 	sf::Font font;
 	sf::Text text;
+
+	float x_pos, y_pos, width, height; // all in percent %
 
 	std::stack<unsigned char> *eventsPtr;
 	unsigned char signal;
@@ -26,10 +28,12 @@ public:
 	/*Constructors Destructors*/
 	Button(float x_pos, float y_pos, float width, float height,
 		sf::Font *font, std::string text,
-		std::stack<unsigned char> *eventsPtr, unsigned char signal);
+		std::stack<unsigned char> *eventsPtr, unsigned char signal,
+		sf::RenderWindow* window);
 	virtual ~Button();
 
 	/*Functions*/
+	void onWindowResize();
 
 	/*Updater Renderers*/
 	void update(const sf::Vector2f& mousePosWindow);

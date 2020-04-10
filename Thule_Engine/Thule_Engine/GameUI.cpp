@@ -2,11 +2,14 @@
 
 /*Constructor Destructor*/
 
-GameUI::GameUI(sf::Font *font, std::stack<unsigned char> *eventsPtr)
+GameUI::GameUI(sf::Font *font, std::stack<unsigned char> *eventsPtr, sf::RenderWindow *window)
 {
 	this->font = font;
 
-	UiEntity *b = new Button(100, 100, 100,100,font,"Synth", eventsPtr, 0);
+    this->window = window;
+    sf::Vector2u winSize = window->getSize();
+
+	UiEntity *b = new Button(.9f, 0.f, .1f, .1f,font, "Quit", eventsPtr, 0, this->window);
 	this->UiEntities.push_back(b);
 
 }
@@ -23,6 +26,11 @@ GameUI::~GameUI()
     }
 
    this->UiEntities.clear(); // List is deleted.
+}
+
+void GameUI::onWindowResize()
+{
+    for (auto i : this->UiEntities) i->onWindowResize();
 }
 
 /*Updaters and Renderers*/

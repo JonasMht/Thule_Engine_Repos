@@ -12,8 +12,11 @@ public:
 	sf::Font *font;
 
 	/*Constructor Destructor*/
-	GameUI(sf::Font *font, std::stack<unsigned char> *eventsPtr);
+	GameUI(sf::Font *font, std::stack<unsigned char> *eventsPtr, sf::RenderWindow* window);
 	virtual ~GameUI();
+
+	/*Functions*/
+	void onWindowResize();
 
 	/*Updaters and Renderers*/
 	void update(const sf::Vector2f& mousePosView);

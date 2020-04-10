@@ -3,10 +3,21 @@
 
 Button::Button(float x_pos, float y_pos, float width, float height,
 	sf::Font *font, std::string text,
-	std::stack<unsigned char> *eventsPtr, unsigned char signal)
+	std::stack<unsigned char> *eventsPtr, unsigned char signal,
+	sf::RenderWindow* window)
 {
-	this->shape.setPosition(sf::Vector2f(x_pos, y_pos));
-	this->shape.setSize(sf::Vector2f(width, height));
+	this->wasClicked = false;
+
+	this->window = window;
+
+	this->x_pos = x_pos;
+	this->y_pos = y_pos;
+	this->width = width;
+	this->height = height;
+
+	//set relative dimension and position
+	this->shape.setPosition(sf::Vector2f(this->x_pos * this->window->getSize().x, this->y_pos * this->window->getSize().y));
+	this->shape.setSize(sf::Vector2f(this->width * this->window->getSize().x, this->height *this->window->getSize().y));
 
     this->font = *font;
 	this->text.setFont(this->font);
@@ -18,7 +29,7 @@ Button::Button(float x_pos, float y_pos, float width, float height,
 		this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f) - (this->text.getGlobalBounds().height / 2.f)
 		);//center the text
 
-	this->idleColor = sf::Color(50,120,150,255);
+	this->idleColor = sf::Color(60,130,170,255);
 	this->hoverColor = sf::Color(70,160,210,255);
 	this->activeColor = sf::Color(50,120,150,230);
 	this->shape.setFillColor(this->idleColor);
@@ -31,6 +42,13 @@ Button::Button(float x_pos, float y_pos, float width, float height,
 Button::~Button()
 {
     std::cout<<"Buton endend\n";
+}
+
+void Button::onWindowResize()
+{
+	//set relative dimension and position
+	this->shape.setPosition(sf::Vector2f(this->x_pos * this->window->getSize().x, this->y_pos * this->window->getSize().y));
+	this->shape.setSize(sf::Vector2f(this->width * this->window->getSize().x, this->height * this->window->getSize().y));
 }
 
 /*Functions*/
@@ -52,9 +70,18 @@ void Button::update(const sf::Vector2f& mousePosWindow)
 		//check if pressed
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			this->eventsPtr->push(this->signal);
+			this->wasClicked = true;
 			stateColor = this->activeColor;
 		}
+		else if (this->wasClicked)
+		{
+			this->wasClicked = false;
+			this->eventsPtr->push(this->signal);
+		}
+	}
+	else
+	{
+		this->wasClicked = false;
 	}
 	this->shape.setFillColor(stateColor);
 }

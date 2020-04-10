@@ -65,7 +65,7 @@ std::stack<unsigned char>* eventsPtr)
 
 	this->eventsPtr = eventsPtr;
 
-	this->UI = new GameUI(&this->font, this->eventsPtr);//share by pointer
+	this->UI = new GameUI(&this->font, this->eventsPtr, this->window);//share by pointer
 }
 
 GameState::~GameState()
@@ -119,6 +119,7 @@ void GameState::onWindowResize()
 {
 	this->initView();
 	this->initUiView();
+	this->UI->onWindowResize();
 }
 
 void GameState::onDubbleClick()
