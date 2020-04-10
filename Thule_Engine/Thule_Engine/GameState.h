@@ -13,13 +13,14 @@ private:
 	sf::Font font;
 
 	sf::View mainView;
-	sf::Event event;
+
+	std::stack<unsigned char> *eventsPtr;
 
 	sf::Clock stateClock;
 
 	float zoom, zoomTarget, initialWidth, heightWidthRatio;
 	sf::Time clickTime;
-	
+
 
 	/*Private functions*/
 	void initFonts();
@@ -30,19 +31,20 @@ private:
 public:
 
 	/*Constructors Destructors*/
-	GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys);
+	GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys,
+	std::stack<unsigned char>* eventsPtr);
 	virtual ~GameState();
 
 	/*Functions*/
-	void endState(); // called at the end of this entity
+	void endEntity(); // called at the end of this entity
 
 	void updateInput(const float& delta); //Update keybinds
-	
+
 	/*Called if ...*/
 	void onWindowResize();
 	void onDubbleClick();
 	void onViewDrag();
-	
+
 	/*Mouse Events*/
 	void onMouseScroll(const float scrollDir, const float& delta);
 	void onMouseMiddleClick();
@@ -51,8 +53,8 @@ public:
 	void onMouseLeftRelease();
 	void onMouseRightClick();
 	void onMouseRightRelease();
-	
-	
+
+
 	/*Updaters and Renderers*/
 	void updateZoom();
 	void update(const float& delta);

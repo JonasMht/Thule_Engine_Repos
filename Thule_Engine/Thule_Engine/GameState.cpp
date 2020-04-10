@@ -53,7 +53,8 @@ void GameState::initView()
 }
 
 /*Constructors Destructors*/
-GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys)
+GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys,
+std::stack<unsigned char>* eventsPtr)
 	: State(window, supportedKeys)
 {
 	this->clickTime = this->stateClock.getElapsedTime();
@@ -62,7 +63,9 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initSystems();
 	this->initView();
 
-	this->UI = new GameUI(&this->font);//share by pointer
+	this->eventsPtr = eventsPtr;
+
+	this->UI = new GameUI(&this->font, this->eventsPtr);//share by pointer
 }
 
 GameState::~GameState()
@@ -73,12 +76,13 @@ GameState::~GameState()
 		delete e;
 		i++;
 	}
+
 	delete this->UI;
 }
 
 /*Functions*/
 
-void GameState::endState()
+void GameState::endEntity()
 {
 	//do things at the end of the state, ex: save
 	std::cout << "End of State\n";

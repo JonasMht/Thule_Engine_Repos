@@ -35,12 +35,13 @@ void MainMenuState::initButtons()
 	sf::Color hoverColor = sf::Color(80, 80, 120, 180);
 	sf::Color activeColor = sf::Color(50, 50, 70, 200);
 
+	/* Out od date
 	this->buttons["ENGINE_BTN"] = new Button(200, 200, 150, 40,
 		&this->font, "THULE ENGINE v0.1");
 	this->buttons["MAINMENU_BTN"] = new Button(200, 270, 150, 40,
 		&this->font, "MAIN MENU");
 	this->buttons["EXITDESKTOP_BTN"] = new Button(200, 340, 150, 40,
-		&this->font, "BACK TO DESKTOP");
+		&this->font, "BACK TO DESKTOP");*/
 }
 
 /*Constructors Destructors*/
@@ -90,9 +91,6 @@ void MainMenuState::updateButtons()
 	{
 		it->second->update(this->mousePosView);
 	}
-
-	if (this->buttons["EXITDESKTOP_BTN"]->isPressed() || this->buttons["MAINMENU_BTN"]->isPressed())
-		this->quitState = true; //quit the State if true
 
 }
 

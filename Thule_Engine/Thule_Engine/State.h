@@ -40,7 +40,7 @@ public:
 	virtual void checkForQuitState();// check if quit conditions are met
 
 	/*Events*/
-	virtual void endState() = 0;
+	virtual void endEntity() = 0;
 	virtual void onWindowResize(); //Window resize event
 	virtual void onMouseScroll(const float scrollDir, const float& delta); //mouse scroll event
 	virtual void onMouseMiddleClick();

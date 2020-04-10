@@ -9,15 +9,15 @@ class GameUI :
 public:
 	/*Variables*/
 	std::list<UiEntity*> UiEntities;
-	sf::Font* font;
+	sf::Font *font;
 
 	/*Constructor Destructor*/
-	GameUI(sf::Font* font);
+	GameUI(sf::Font *font, std::stack<unsigned char> *eventsPtr);
 	virtual ~GameUI();
 
 	/*Updaters and Renderers*/
 	void update(const sf::Vector2f& mousePosView);
-	void render(sf::RenderTarget* target);
+	void render(sf::RenderTarget *target);
 };
 
 #endif // !GAMEUI_H

@@ -40,7 +40,7 @@ const bool& State::getQuitState()
 }
 
 /*Events*/
-void State::endState()
+void State::endEntity()
 {
 
 }

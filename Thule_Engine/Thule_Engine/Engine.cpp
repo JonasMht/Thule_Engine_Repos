@@ -62,7 +62,8 @@ void Engine::initKeys()
 void Engine::initStates()
 {
     //this->states.push(new MainMenuState(this->window, &this->supportedKeys)); // will add a new state
-    this->states.push(new GameState(this->window, &this->supportedKeys)); // will add a new state
+    this->states.push(new GameState(this->window, &this->supportedKeys, &
+    this->engineEvents)); // will add a new state
 }
 
 /*Constructors Destructors*/
@@ -72,8 +73,6 @@ Engine::Engine() //Constructor
     this->initWindow();
     this->initKeys();
     this->initStates();
-    unsigned char ev = 0;
-    this->engineEvents.push(ev);
 }
 
 Engine::~Engine() //Destructor
@@ -93,7 +92,7 @@ void Engine::endApplication()
 {
     //Should save here!
     std::cout << "Ending Application\n";
-
+    this->window->close();
 }
 
 void Engine::updateDelta()
@@ -108,7 +107,7 @@ void Engine::updateEvents()
     {
         /*Moste likely event to the least likeliest event - top to bottom*/
         if (this->event.type == sf::Event::Closed)
-            this->window->close();
+            this->endApplication();
         else if (this->event.type == sf::Event::MouseWheelScrolled)
         {
             this->states.top()->onMouseScroll(event.mouseWheelScroll.delta, this->delta);
@@ -148,6 +147,7 @@ void Engine::updateEvents()
         if(this->engineEvents.top() == 0)
         {
             std::cout<<"Dummy event n.0\n";
+            this->endApplication();
         }
         this->engineEvents.pop();
     }
@@ -164,7 +164,7 @@ void Engine::update()
         if (this->states.top()->getQuitState())
         {
             //GameState should save here
-            this->states.top()->endState();
+            this->states.top()->endEntity();
             delete this->states.top();
             this->states.pop();
         }
@@ -173,7 +173,6 @@ void Engine::update()
     {
         //Application end
         this->endApplication();
-        this->window->close();
     }
 }
 

@@ -2,15 +2,14 @@
 
 
 Button::Button(float x_pos, float y_pos, float width, float height,
-	sf::Font* font, std::string text)
+	sf::Font *font, std::string text,
+	std::stack<unsigned char> *eventsPtr, unsigned char signal)
 {
-	this->buttonState = BTN_IDLE;
-
 	this->shape.setPosition(sf::Vector2f(x_pos, y_pos));
 	this->shape.setSize(sf::Vector2f(width, height));
 
-	this->font = font;
-	this->text.setFont(*this->font);
+    this->font = *font;
+	this->text.setFont(this->font);
 	this->text.setString(text);
 	this->text.setFillColor(sf::Color::White);
 	this->text.setCharacterSize(12);
@@ -22,20 +21,16 @@ Button::Button(float x_pos, float y_pos, float width, float height,
 	this->idleColor = sf::Color(50,120,150,255);
 	this->hoverColor = sf::Color(70,160,210,255);
 	this->activeColor = sf::Color(50,120,150,230);
-	this->shape.setFillColor(this->idleColor); //using pointers to link dynamicaly > ease of switching colors
+	this->shape.setFillColor(this->idleColor);
+
+	this->eventsPtr = eventsPtr;
+	this->signal = signal;
+
 }
 
 Button::~Button()
 {
-
-}
-
-/*Accessors*/
-
-bool Button::isPressed()
-{
-	// check if the button is pressed
-	return this->buttonState == BTN_ACTIVE;
+    std::cout<<"Buton endend\n";
 }
 
 /*Functions*/
@@ -45,7 +40,6 @@ void Button::update(const sf::Vector2f& mousePosWindow)
 	//Update the booleans for hover and active
 
 	//Set to idle
-	this->buttonState = BTN_IDLE;
 	sf::Color stateColor;
 
 	stateColor = this->idleColor;
@@ -53,17 +47,15 @@ void Button::update(const sf::Vector2f& mousePosWindow)
 	//check if hovered
 	if (this->shape.getGlobalBounds().contains(mousePosWindow))
 	{
-		this->buttonState = BTN_HOVER;
 		stateColor = this->hoverColor;
 
 		//check if pressed
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			this->buttonState = BTN_ACTIVE;
+			this->eventsPtr->push(this->signal);
 			stateColor = this->activeColor;
 		}
 	}
-
 	this->shape.setFillColor(stateColor);
 }
 

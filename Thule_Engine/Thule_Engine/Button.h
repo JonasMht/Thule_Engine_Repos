@@ -3,8 +3,6 @@
 
 #include "UiEntity.h"
 
-enum button_states {BTN_IDLE = 0, BTN_HOVER, BTN_ACTIVE};// sets values for const values n+1 starting at 0;
-
 class Button :
 	public UiEntity
 {
@@ -13,8 +11,11 @@ private:
 	unsigned char buttonState;
 
 	sf::RectangleShape shape;
-	sf::Font* font;
+	sf::Font font;
 	sf::Text text;
+
+	std::stack<unsigned char> *eventsPtr;
+	unsigned char signal;
 
 	sf::Color idleColor;
 	sf::Color hoverColor;
@@ -24,13 +25,9 @@ public:
 
 	/*Constructors Destructors*/
 	Button(float x_pos, float y_pos, float width, float height,
-		sf::Font* font, std::string text);
+		sf::Font *font, std::string text,
+		std::stack<unsigned char> *eventsPtr, unsigned char signal);
 	virtual ~Button();
-
-	/*Accessors*/
-
-	bool isPressed();
-
 
 	/*Functions*/
 

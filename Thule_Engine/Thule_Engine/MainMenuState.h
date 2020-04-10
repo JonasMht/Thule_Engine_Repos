@@ -33,7 +33,7 @@ public:
 
 	void renderButtons();
 	void render();
-	
+
 
 };
 
