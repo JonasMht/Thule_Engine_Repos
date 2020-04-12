@@ -43,13 +43,14 @@ void GameState::initSystems()
 
 void GameState::initView()
 {
+	// average screen ratio is at 16:9 meaning 
 	this->zoom = 1.f;
 	this->zoomTarget = this->zoom;
 	this->initialWidth = 200.f;
-	this->heightWidthRatio = (float)this->window->getSize().y / (float)this->window->getSize().x;
 
 	this->mainView.setCenter(sf::Vector2f(300, 300));
-	this->mainView.setSize(sf::Vector2f(this->initialWidth, this->initialWidth * heightWidthRatio));
+	this->mainView.setSize(sf::Vector2f(this->initialWidth, this->initialWidth * SCREEN_WH_RATIO));
+	this->mainView.setViewport( scaleToFit( this->window->getSize() ) );
 }
 
 /*Constructors Destructors*/
@@ -203,7 +204,7 @@ void GameState::updateZoom()
 		//smooth zoom in
 		this->zoom = lerp(.1f, this->zoom, this->zoomTarget);//zoom in
 		sf::Vector2f newScale{ this->initialWidth * this->zoom,
-			this->initialWidth * this->heightWidthRatio * this->zoom };
+			this->initialWidth * SCREEN_WH_RATIO * this->zoom };
 		this->mainView.setSize(newScale);
 
 		this->window->setView(this->mainView);
@@ -238,9 +239,16 @@ void GameState::update(const float& delta)
 
 void GameState::render()
 {
-	this->window->setView(this->mainView);
-	for (auto i : this->entities) i->render(this->window);
 
+	this->window->setView(this->mainView);
+	sf::RectangleShape background;
+	background.setFillColor(sf::Color(50,50,75,255));
+	background.setSize(sf::Vector2f(999999, 999999));
+	background.setPosition(-9999, -9999);
+	this->window->draw(background);
+	for (auto i : this->entities) i->render(this->window);
+	
+	
 	this->window->setView(this->UiView); // define the UI view
 	this->UI->render(this->window);
 

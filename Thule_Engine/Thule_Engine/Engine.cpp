@@ -10,7 +10,7 @@ void Engine::initWindow()
     std::ifstream ifs("Config/window.ini");
 
     std::string title = "Thule Engine";
-    sf::VideoMode window_bounds(800,600); //base opening window bounds
+    sf::VideoMode window_bounds(720, 1208); //base opening window bounds 
     unsigned framerate_limit = 120;
     unsigned char antialiasingLevel = 0;
     bool vertical_sync_enabled = false;

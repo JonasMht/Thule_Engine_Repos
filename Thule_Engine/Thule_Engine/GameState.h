@@ -18,7 +18,7 @@ private:
 
 	sf::Clock stateClock;
 
-	float zoom, zoomTarget, initialWidth, heightWidthRatio;
+	float zoom, zoomTarget, initialWidth;
 	sf::Time clickTime;
 
 

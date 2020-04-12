@@ -18,3 +18,19 @@ bool isInRange(float x, float min, float max)
 {
 	return (x>min)&&(x<max);
 }
+
+sf::FloatRect scaleToFit(const sf::Vector2u windowDim)
+{
+	if (windowDim.x * SCREEN_WH_RATIO > windowDim.y) //window is horizontaly elongated
+	{
+		float x = .5f - (windowDim.y / (float)windowDim.x) / (SCREEN_WH_RATIO + SCREEN_WH_RATIO);
+		float w = (.5f - x) * 2.f;
+		return sf::FloatRect(x, .0f, w, 1.0f);
+	}
+	else
+	{
+		float y = .5f - (windowDim.x / (float)windowDim.y) * (SCREEN_WH_RATIO/2);
+		float h = (.5f - y) * 2.f;
+		return sf::FloatRect(.0f, y, 1.0f, h); //window is verticaly elongated
+	}
+}

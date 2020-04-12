@@ -19,9 +19,12 @@
 #include"SFML/Network.hpp"
 
 #define PI 3.141592f
+#define SCREEN_WH_RATIO 0.5625f // windth:height ratio
 
 float constrainAngle(float rad_angle);
 
 float lerp(float value, float start, float end);
 
 bool isInRange(float x, float a, float b);
+
+sf::FloatRect scaleToFit(const sf::Vector2u windowDim);
